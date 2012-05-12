@@ -1,0 +1,1842 @@
+#Imports
+from sikuli.Sikuli import *
+from org.sikuli.script.natives import Vision
+import ImageLib
+reload(ImageLib)
+from ImageLib import *
+#Define Regions&Global Settings/Variables
+CenterReg=Region(SCREEN.w*1/8,SCREEN.h*1/8,SCREEN.w*3/4,SCREEN.h*3/4)
+TopRightReg=Region(SCREEN.w*1/2,0,SCREEN.w*1/2,SCREEN.h*1/2)
+BottomLeftReg=Region(0,SCREEN.h*1/2,SCREEN.w*1/2,SCREEN.h*1/2)
+TopLeftReg=Region(0,0,SCREEN.w*1/2,SCREEN.h*1/2)
+BottomRightReg=Region(SCREEN.w*1/2,SCREEN.h*1/2,SCREEN.w*1/2,SCREEN.h*1/2)
+RightReg=Region(SCREEN.w*1/2,0,SCREEN.w*1/2,SCREEN.h)
+LeftReg=Region(0,0,SCREEN.w*1/2,SCREEN.h)
+BottomReg=Region(0,SCREEN.h*1/2,SCREEN.w,SCREEN.h*1/2)
+TopReg=Region(0,0,SCREEN.w,SCREEN.h*1/2)
+Settings.MinSimilarity=0.5
+Settings.MoveMouseDelay=0.1
+Vision.setParameter("MinTargetSize",6)
+Failures='\n'
+strTime='\n'
+ExitCode=0
+#Record Start Time
+StartTime=time.time()
+
+#All Browsers Signup
+try:
+    TopLeftReg.click(GroovesharkLogo)
+    CenterReg.wait(DefaultSearchForMusicBar,30)
+    wait(2)
+    if TopLeftReg.exists(SafariNavigator):
+        TopLeftReg.type('e',KEY_CTRL+KEY_ALT)
+        CenterReg.wait(SafariWarning,10)
+        CenterReg.click(SafariEmptyBtn)
+    else:
+        TopLeftReg.type(Key.F5,KEY_CTRL)
+        CenterReg.wait(DefaultSearchForMusicBar,10)
+    wait(2)
+    TopRightReg.wait(AccountMenu,30)
+    TopLeftReg.type(Key.F5)
+    wait(3)
+    CenterReg.wait(DefaultSearchForMusicBar,10)
+    wait(3)
+    if TopRightReg.exists(AccountMenu,10):
+        TopRightReg.hover(AccountMenu)
+        TopRightReg.click(LogoutOption)
+        TopRightReg.wait(LoginMenu,30)
+        wait(2)
+    TopRightReg.click(CreateAccountMenu)
+    CenterReg.wait(ContinueBtn,30)
+    CenterReg.click(EmailAddressTextbox)
+    NewAddress='hi'+str(time.time())+'@shark.com'
+    CenterReg.paste(NewAddress)
+    CenterReg.type('\tBob Marley\t123456\t123456\t')
+    if CenterReg.exists(NonIECheckbox):
+        CenterReg.click(NonIECheckbox)
+    if CenterReg.exists(IECheckbox):
+        CenterReg.click(IECheckbox)
+    CenterReg.click(ContinueBtn)
+    CenterReg.wait(BackBtn,30)
+    CenterReg.click(MonthDropdownbox)
+    wait(1)
+    click(Month12Option)
+    CenterReg.click(DayDropdownbox)
+    wait(1)
+    click(Day7Option)
+    CenterReg.click(YearDropdownbox)
+    wait(1)
+    if BottomReg.exists(DropdownboxScrollBar):
+        BottomReg.dragDrop(DropdownboxScrollBar,DropdownboxDownArrow)
+    elif BottomReg.exists(DropdownboxScrollBar1):
+        BottomReg.dragDrop(DropdownboxScrollBar1,DropdownboxDownArrow)
+    else:
+        TopReg.drag(DropdownboxScrollBar)
+        CenterReg.dropAt(DropdownboxDownArrow)
+    wait(1)
+    click(Year1919Option)
+    CenterReg.click(MaleOption)
+    BottomRightReg.click(ContinueBtn)
+    if CenterReg.exists(CloseLightboxBtn):
+        CenterReg.click(CloseLightboxBtn)
+        wait(3)
+    CenterReg.wait(MaybeLaterBtn,30)
+    CenterReg.click(MaybeLaterBtn)
+    CenterReg.wait(SignupFinishText,30)
+    print('Signup successful!')
+except StandardError,se:
+    Failures+='Signup failed.\n'+str(se)+'\n\n'
+except FindFailed,ff:
+        Failures+='Signup failed.\n'+str(ff)+'\n'
+except:
+        Failures+='Signup failed.\n\n'
+
+#All Browsers Login
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        if TopRightReg.exists(AccountMenu):
+            TopRightReg.hover(AccountMenu)
+            RightReg.click(LogoutOption)
+            if CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                wait(2)
+            TopRightReg.wait(LoginMenu,30)
+            wait(2)
+            TopRightReg.click(LoginMenu)
+        elif TopRightReg.exists(TestAccountMenu):
+            TopRightReg.hover(TestAccountMenu)
+            RightReg.click(LogoutOption)
+            if CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                wait(2)
+            TopRightReg.wait(LoginMenu,30)
+            wait(2)
+            TopRightReg.click(LoginMenu)
+        else:
+            TopRightReg.click(LoginMenu)
+        TopRightReg.wait(LoginBox,30)
+        wait(2)
+        TopRightReg.paste('rosenhu555')
+        TopRightReg.type('\t19871900')
+        TopRightReg.click(LoginBtn)
+        TopRightReg.wait(AccountMenu,30)
+        print('Regular login OK.')
+    except StandardError,se:
+        Failures+='Regular login failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Regular login failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Regular login failed.\n\n'
+    try:
+        TopRightReg.hover(AccountMenu)
+        RightReg.click(LogoutOption)
+        if CenterReg.exists(CloseLightboxBtn):
+            CenterReg.click(CloseLightboxBtn)
+            wait(2)
+        TopRightReg.wait(LoginMenu,30)
+        wait(2)
+        TopRightReg.click(LoginMenu)
+        TopRightReg.wait(LoginBox,30)
+        RightReg.click(TwitterLoginBtn)
+        TopRightReg.wait(AccountMenu,30)
+        print('Login with Twitter OK.')
+    except StandardError,se:
+        Failures+='Login with Twitter failed.\n'+str(se)+'\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except FindFailed,ff:
+        Failures+='Login with Twitter failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Login with Twitter failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        if TopRightReg.exists(AccountMenu):
+            TopRightReg.wait(AccountMenu,60)
+            TopRightReg.hover(AccountMenu)
+            RightReg.click(LogoutOption)
+            if CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                wait(2)
+        TopRightReg.wait(LoginMenu,30)
+        wait(2)
+        TopRightReg.click(LoginMenu)
+        RightReg.click(GoogleLoginBtn)
+        TopRightReg.wait(AccountMenu,30)
+        print('Login with Google OK.')
+    except StandardError,se:
+        Failures+='Login with Google failed.\n'+str(se)+'\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+        TopLeftReg.click(GroovesharkLogo)
+        if TopRightReg.exists(LoginMenu):
+            TopRightReg.click(LoginMenu)
+            TopRightReg.wait(LoginBox,30)
+            TopRightReg.paste('rosenhu555')
+            TopRightReg.type('\t19871900')
+            TopRightReg.click(LoginBtn)
+            TopRightReg.wait(AccountMenu,30)
+    except FindFailed,ff:
+        Failures+='Login with Google failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+        TopLeftReg.click(GroovesharkLogo)
+        if TopRightReg.exists(LoginMenu):
+            TopRightReg.click(LoginMenu)
+            TopRightReg.wait(LoginBox,30)
+            TopRightReg.paste('rosenhu555')
+            TopRightReg.type('\t19871900')
+            TopRightReg.click(LoginBtn)
+            TopRightReg.wait(AccountMenu,10)
+    except:
+        Failures+='Login with Google failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+        TopLeftReg.click(GroovesharkLogo)
+        if TopRightReg.exists(LoginMenu):
+            TopRightReg.click(LoginMenu)
+            TopRightReg.wait(LoginBox,30)
+            TopRightReg.paste('rosenhu555')
+            TopRightReg.type('\t19871900')
+            TopRightReg.click(LoginBtn)
+            TopRightReg.wait(AccountMenu,10)
+    print('Login test complete.')
+except:
+        Failures+='Login failed.\n\n'
+
+#All Browsers Settings
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        wait(2)
+        TopRightReg.hover(AccountMenu)
+        TopRightReg.click(LanguageOption)
+        CenterReg.wait(ChineseOption,10)
+        CenterReg.click(ChineseOption)
+        TopLeftReg.wait(TChineseCommunityMenu,10)
+        TopRightReg.hover(AccountMenu)
+        TopRightReg.click(ChineseLanguageOption)
+        CenterReg.wait(EnglishOption,10)
+        CenterReg.click(EnglishOption)
+        TopLeftReg.wait(CommunityMenu,10)
+        wait(2)
+    except StandardError,se:
+        Failures+='Language failed.\n'+str(se)+'\n\n'
+        TopRightReg.hover(AccountMenu)
+        TopRightReg.click(ChineseLanguageOption)
+        CenterReg.wait(EnglishOption,10)
+        CenterReg.click(EnglishOption)
+        wait(2)
+        TopLeftReg.wait(CommunityMenu,30)
+    except FindFailed,ff:
+        Failures+='Language failed.\n'+str(ff)+'\n\n'
+        TopRightReg.hover(AccountMenu)
+        TopRightReg.click(ChineseLanguageOption)
+        CenterReg.wait(EnglishOption,10)
+        CenterReg.click(EnglishOption)
+        wait(2)
+        TopLeftReg.wait(CommunityMenu,30)
+    except:
+        Failures+='Language failed.\n\n'
+        TopRightReg.hover(AccountMenu)
+        TopRightReg.click(ChineseLanguageOption)
+        CenterReg.wait(EnglishOption,10)
+        CenterReg.click(EnglishOption)
+        wait(2)
+        TopLeftReg.wait(CommunityMenu,30)
+    try:
+        TopRightReg.hover(AccountMenu)
+        TopRightReg.click(SettingsOption)
+        TopLeftReg.wait(ProfileSettingsTitle,30)
+        LeftReg.click(FullNameTextbox)
+        LeftReg.type('1')
+        while not BottomLeftReg.exists(SaveChangesBtn,1):
+                wheel(WHEEL_DOWN,1)
+        BottomLeftReg.click(SaveChangesBtn)
+        BottomLeftReg.wait(SuccessImage or UnsuccessImage,30)
+        if BottomLeftReg.exists(SuccessImage):
+                print('Profile information has been saved successfully!')
+        else:
+                print('Failed to save profile information!')
+        while not TopLeftReg.exists(FullNameTextbox,1):
+            wheel(WHEEL_UP,1)
+        LeftReg.click(FullNameTextbox)
+        LeftReg.type(Key.BACKSPACE)
+        BottomLeftReg.click(SaveChangesBtn)
+        wait(2)
+        BottomLeftReg.wait(SuccessImage or UnsuccessImage,30)
+        RightReg.dragDrop(DropdownboxScrollBar,DropdownboxUpArrow)
+        print 'Save profile information OK.'
+    except StandardError,se:
+        Failures+='Save profile information failed.\n'+str(se)+'\n\n'
+        RightReg.dragDrop(DropdownboxScrollBar,DropdownboxUpArrow)
+    except FindFailed,ff:
+        Failures+='Save profile information failed.\n'+str(ff)+'\n'
+        RightReg.dragDrop(DropdownboxScrollBar,DropdownboxUpArrow)
+    except:
+        Failures+='Save profile information failed.\n\n'
+        RightReg.dragDrop(DropdownboxScrollBar,DropdownboxUpArrow)
+    try:
+        while not TopLeftReg.exists(PasswordTab):
+                wheel(WHEEL_UP,50)
+        TopLeftReg.click(PasswordTab)
+        LeftReg.wait(ChangeMyPasswordTitle,30)
+        LeftReg.click(CurrentPasswordTextbox)
+        LeftReg.type('19871900\t111111\t111111')
+        LeftReg.click(SaveChangesBtn)
+        LeftReg.wait(SuccessImage or UnsuccessImage,30)
+        if LeftReg.exists(SuccessImage):
+                print('Password has been changed successfully!')
+        else:
+                print('Failed to change password!')
+        LeftReg.click(CurrentPasswordTextbox)
+        for i in range(10):
+                LeftReg.type(Key.BACKSPACE)
+        LeftReg.type('111111\t')
+        for i in range(10):
+                LeftReg.type(Key.RIGHT)
+        for i in range(10):
+                LeftReg.type(Key.BACKSPACE)
+        LeftReg.type('19871900\t')
+        for i in range(10):
+                LeftReg.type(Key.RIGHT)
+        for i in range(10):
+                LeftReg.type(Key.BACKSPACE)
+        LeftReg.type('19871900')
+        LeftReg.click(SaveChangesBtn)
+        LeftReg.wait(SuccessImage or UnsuccessImage,30)
+        print 'Change password OK.'
+    except StandardError,se:
+        Failures+='Change password failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Change password failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Change password failed.\n\n'
+    try:
+        TopLeftReg.click(PreferencesTab)
+        wait(1)
+        BottomLeftReg.click(SaveChangesBtn)
+        BottomLeftReg.wait(SuccessImage,10)
+        RightReg.dragDrop(DropdownboxScrollBar,DropdownboxDownArrow)
+        LeftReg.wait(NotificationsOptions,10)
+        wait(1)
+        LeftReg.click(NotificationsOptions)
+        BottomLeftReg.click(SaveChangesBtn)
+        BottomLeftReg.wait(SuccessImage,10)
+        RightReg.dragDrop(DropdownboxScrollBar,DropdownboxUpArrow)
+        print 'Save preferences OK.'
+    except StandardError,se:
+        Failures+='Save preferences failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Save preferences failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Save preferences failed.\n\n'
+    try:
+        TopReg.click(PremiumSubscriptionsTab)
+        if LeftReg.exists(SubscriptionsTitle):
+                print('Subscription OK.')
+        else:
+                print('Subscription failed!')
+    except StandardError,se:
+        Failures+='Subscription failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Subscription failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Subscription failed.\n\n'
+    try:
+        TopReg.click(PrivacyTab)
+        TopLeftReg.click(SaveChangesBtn)
+        LeftReg.wait(SuccessImage,20)
+        LeftReg.click(HideUserTextbox)
+        wait(2)
+        LeftReg.type('ji')
+        LeftReg.wait(HideUserSelection,10)
+        LeftReg.click(HideUserSelection)
+        BottomLeftReg.click(SaveChangesBtn)
+        wheel(WHEEL_DOWN,10)
+        LeftReg.wait(UnhideUserBtn,10)
+        LeftReg.click(UnhideUserBtn)
+        wait(3)
+        print 'Privacy Settings OK.'
+    except StandardError,se:
+        Failures+='Privacy Settings failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Privacy Settings failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Privacy Settings failed.\n\n'
+    try:
+        TopReg.click(ConnectAccountsTab)
+        LeftReg.wait(RemoveTwitterBtn,30)
+        LeftReg.click(RemoveTwitterBtn)
+        LeftReg.wait(ConnectToTwitterBtn,30)
+        LeftReg.click(ConnectToTwitterBtn)
+        LeftReg.wait(RemoveTwitterBtn,30)
+        print('Remove & Connect to Twitter OK.')
+    except StandardError,se:
+        Failures+='Twitter connection failed.\n'+str(se)+'\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except FindFailed,ff:
+        Failures+='Twitter connection failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        RightReg.dragDrop(DropdownboxScrollBar,DropdownboxDownArrow)
+        BottomReg.wait(RemoveGgBtn,10)
+        BottomReg.click(RemoveGgBtn)
+        BottomReg.wait(ConnectToGgBtn,30)
+        BottomReg.click(ConnectToGgBtn)
+        BottomReg.wait(RemoveGgBtn,30)
+        print('Remove & Connect to Google OK.')
+    except StandardError,se:
+        Failures+='Google connection failed.\n'+str(se)+'\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except FindFailed,ff:
+        Failures+='Google connection failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        if LeftReg.exists(RemoveLastfmBtn):
+            LeftReg.click(RemoveLastfmBtn)
+        LeftReg.wait(ConnectToLastfmBtn,10)
+        LeftReg.click(ConnectToLastfmBtn)
+        wait(2)
+        if CenterReg.exists(LastfmAllowAccessBtn,5):
+            CenterReg.click(LastfmAllowAccessBtn)
+        else:
+            CenterReg.type(Key.F5,KEY_CTRL)
+            raise StandardError('Cannot find Allow Access button.')
+        wait(3)
+        LeftReg.wait(RemoveLastfmBtn,30)
+        wait(2)
+        print('Remove & Connect to Last.fm OK.')
+    except StandardError,se:
+        Failures+='Last.fm connection failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Last.fm connection failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Last.fm connection failed.\n\n'
+    try:
+        LeftReg.click(SaveSettingsBtn)
+        LeftReg.wait(SuccessImage or UnsuccessImage,30)
+        if LeftReg.exists(SuccessImage):
+                print('Last.fm Settings have been saved successfully.')
+        else:
+                print('Failed to save Last.fm Settings!')
+        LeftReg.wait(RemoveLastfmBtn,30)
+        wait(2)
+        print 'Save Last.fm Settings OK.'
+    except StandardError,se:
+        Failures+='Save Last.fm Settings failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Save Last.fm Settings failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Save Last.fm Settings failed.\n\n'
+
+    print('Settings test complete.')
+except:
+        Failures+='Settings failed.\n'
+
+#All Browsers Themes
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        CenterReg.wait(DefaultSearchForMusicBar,30)
+        BottomRightReg.click(ThemesTag)
+        CenterReg.wait(ArtistsThemeMenu,30)
+        TopLeftReg.click(ArtistsThemeMenu)
+        CenterReg.wait(ArtistsThemeImage,30)
+        CenterReg.click(ArtistsThemeImage)
+        wait(2)
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+        RightReg.wait(ArtistsThemeIndicator,30)
+        print('Artists theme OK.')
+    except StandardError,se:
+        Failures+='Artists theme failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Artists theme failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Artists theme failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        BottomRightReg.click(ThemesTag)
+        CenterReg.wait(PremiumThemeMenu,30)
+        CenterReg.click(PremiumThemeMenu)
+        wait(1)
+        CenterReg.wait(PremiumThemeImage,30)
+        CenterReg.click(PremiumThemeImage)
+        wait(2)
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+        BottomLeftReg.wait(PremiumThemeIndicator,30)
+        print('Premium theme OK.')
+    except StandardError,se:
+        Failures+='Premium theme failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Premium theme failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Premium theme failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        BottomRightReg.click(ThemesTag)
+        TopLeftReg.wait(AllThemeMenu,30)
+        wait(1)
+        CenterReg.click(AllThemeImage)
+        wait(2)
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+        CenterReg.wait(AllThemeIndicator,30)
+        print('All Themes OK.')
+    except StandardError,se:
+        Failures+='All Themes failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='All Themes failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='All Themes failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    print('Themes test complete.')
+except:
+        Failures+='Themes failed.\n\n'
+
+#All Browsers My Music
+try:
+    try:
+        TopLeftReg.click(MyMusicMenu)
+        LeftReg.click(PlayAllBtn)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        BottomRightReg.click(ClearQueueBtn)
+        BottomLeftReg.wait(QueuePlayBtn,10)
+        wait(2)
+        LeftReg.click(PlayAllMenu)
+        LeftReg.click(PlayNowOption)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        BottomRightReg.click(ClearQueueBtn)
+        BottomLeftReg.wait(QueuePlayBtn,10)
+        wait(2)
+        LeftReg.click(PlayAllMenu)
+        LeftReg.click(PlayNextOption)
+        BottomLeftReg.wait(QueueSongLink,30)
+        BottomRightReg.click(ClearQueueBtn)
+        wait(2)
+        LeftReg.click(PlayAllMenu)
+        LeftReg.click(PlayLastOption)
+        BottomLeftReg.wait(QueueSongLink,30)
+        BottomRightReg.click(ClearQueueBtn)
+        wait(2)
+        LeftReg.click(PlayAllMenu)
+        LeftReg.click(ReplaceCurrentOption)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        BottomRightReg.click(ClearQueueBtn)
+        BottomLeftReg.wait(QueuePlayBtn,10)
+        wait(2)
+        print('Play My Music OK.')
+    except StandardError,se:
+        Failures+='Play My Music failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Play My Music failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Play My Music failed.\n\n'
+    try:
+        if BottomRightReg.exists(ClearQueueBtn):
+            BottomRightReg.click(ClearQueueBtn)
+            wait(2)
+        LeftReg.click(AddAllMenu)
+        LeftReg.click(AddToCurrentSongsOption)
+        BottomLeftReg.wait(QueueSongLink,30)
+        LeftReg.click(AddAllMenu)
+        LeftReg.hover(AddToPlaylistOption)
+        CenterReg.wait(AddToAddListOption,30)
+        CenterReg.click(AddToAddListOption)
+        BottomRightReg.wait(AddToAddListNotice,30)
+        print('Add My Music OK.')
+    except StandardError,se:
+        Failures+='Add My Music failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Add My Music failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Add My Music failed.\n\n'
+except StandardError,se:
+    Failures+='My Music failed.\n'+str(se)+'\n\n'
+except FindFailed,ff:
+    Failures+='My Music failed.\n'+str(ff)+'\n'
+except:
+    Failures+='My Music failed.\n\n'
+
+#All Browsers Playlists
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        wait(2)
+        TopLeftReg.click(MyMusicMenu)
+        wait(3)
+        TopLeftReg.click(PlaylistsTab)
+        TopLeftReg.click(NewPlaylistBtn)
+        CenterReg.wait(CreatePlaylistBtn,30)
+        CenterReg.click(CreatePlaylistBtn)
+        LeftReg.wait(NewPlaylistLink,30)
+        print('Create new playlist OK.')
+    except StandardError,se:
+        Failures+='Create new playlists failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Create new playlists failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Create new playlists failed.\n\n'
+    try:
+        LeftReg.click(NewPlaylistLink)
+        CenterReg.wait(NoSongsPlaylistText,30)
+        CenterReg.click(PlaylistOptionsBtn)
+        wait(1)
+        CenterReg.click(EditPlaylistInfoOption)
+        CenterReg.wait(SaveChangesBtn,30)
+        CenterReg.click(EditPlaylistInfoTextbox)
+        wait(2)
+        for i in range(30):
+                CenterReg.type(Key.RIGHT)
+        for i in range(30):
+                CenterReg.type(Key.BACKSPACE)
+        CenterReg.type('Test')
+        CenterReg.click(SaveChangesBtn)
+        LeftReg.wait(RenamedPlaylistTitle,30)
+        print('Playlist rename OK.')
+    except StandardError,se:
+        Failures+='Playlists rename failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Playlists rename failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Playlists rename failed.\n\n'
+    try:
+        CenterReg.wait(NoSongsPlaylistText,30)
+        LeftReg.click(PlaylistOptionsBtn)
+        wait(1)
+        LeftReg.click(UnpinOption)
+        BottomRightReg.wait(UnpinPlaylistNotice,30)
+        wait(2)
+        LeftReg.click(PlaylistOptionsBtn)
+        wait(1)
+        LeftReg.click(PlaylistDeleteOption)
+        BottomRightReg.wait(DeleteBtn,30)
+        BottomRightReg.click(DeleteBtn)
+        BottomRightReg.wait(RenamedPlaylistDeleteNotice,30)
+        print('Remove from sidebar and Delete OK.')
+    except StandardError,se:
+        Failures+='Remove from sidebar and Delete failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Remove from sidebar and Delete failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Remove from sidebar and Delete failed.\n\n'
+    try:
+        TopLeftReg.click(MyMusicMenu)
+        LeftReg.click(DontMoveLink)
+        LeftReg.wait(DontMoveTitle,30)
+        if BottomRightReg.exists(ClearQueueBtn):
+            BottomRightReg.click(ClearQueueBtn)
+        wait(3)
+        LeftReg.click(PlayAllBtn)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        LeftReg.click(PlayAllMenu)
+        wait(2)
+        LeftReg.click(PlayNowOption)
+        BottomRightReg.wait(Songs10Link,30)
+        wait(2)
+        LeftReg.click(PlayAllMenu)
+        LeftReg.click(PlayNextOption)
+        BottomRightReg.wait(Songs15Link,30)
+        wait(2)
+        LeftReg.click(PlayAllMenu)
+        LeftReg.click(PlayLastOption)
+        BottomRightReg.wait(Songs20Link,30)
+        wait(2)
+        LeftReg.click(PlayAllMenu)
+        LeftReg.click(ReplaceCurrentOption)
+        BottomRightReg.wait(Songs5Link,30)
+        wait(2)
+        LeftReg.click(PlayAllMenu)
+        LeftReg.click(StartRadioOption)
+        BottomRightReg.wait(RadioOnSwitch,30)
+        BottomRightReg.click(ClearQueueBtn)
+        wait(2)
+        print('Play playlists OK.')
+    except StandardError,se:
+        Failures+='Play playlists failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Play playlists failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Play playlists failed.\n\n'
+    try:
+        LeftReg.click(AddAllMenu)
+        LeftReg.click(AddToCurrentSongsOption)
+        BottomRightReg.wait(Songs5Link,30)
+        LeftReg.click(AddAllMenu)
+        LeftReg.hover(AddToPlaylistOption)
+        CenterReg.wait(AddToAddListOption,30)
+        CenterReg.click(AddToAddListOption)
+        BottomRightReg.wait(AddToAddListNotice,30)
+        LeftReg.click(AddAllMenu)
+        LeftReg.hover(AddToPlaylistOption)
+        CenterReg.wait(AddToNewPlaylistOption,30)
+        CenterReg.click(AddToNewPlaylistOption)
+        BottomRightReg.wait(CreatePlaylistBtn,30)
+        BottomRightReg.click(CreatePlaylistBtn)
+        BottomRightReg.wait(AddPlaylistToNewPlaylistNotice,30)
+        TopLeftReg.click(MyMusicMenu)
+        wait(1)
+        LeftReg.click(NewPlaylistLink)
+        wait(1)
+        LeftReg.click(PlaylistOptionsBtn)
+        LeftReg.click(PlaylistDeleteOption)
+        CenterReg.wait(DeleteBtn,30)
+        CenterReg.click(DeleteBtn)
+        BottomRightReg.wait(PlaylistDeleteNotice,30)
+        TopLeftReg.click(MyMusicMenu)
+        LeftReg.wait(DontMoveLink,10)
+        LeftReg.click(DontMoveLink)
+        TopLeftReg.wait(PlaylistOptionsBtn,10)
+        wait(2)
+        LeftReg.click(AddAllMenu)
+        LeftReg.click(AddToMyMusicOption)
+        wait(2)
+        if BottomRightReg.exists(AddPlaylistToMyMusicNotice):
+                print('Songs have been added to My Music.')
+        else:
+                print('Songs already exist in My Music.')
+        print('Add playlist OK.')
+    except StandardError,se:
+        Failures+='Add playlist failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Add playlist failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Add playlist failed.\n\n'
+    try:
+        if LeftReg.exists(DontMoveLink):
+            LeftReg.click(DontMoveLink)
+        LeftReg.wait(NewShareBtn,5)
+        LeftReg.click(NewShareBtn)
+        BottomRightReg.wait(ShareBtn,10)
+        BottomRightReg.click(ShareBtn)
+        BottomRightReg.wait(SharePlaylistNotice,10)
+        BottomRightReg.waitVanish(SharePlaylistNotice,10)
+    except StandardError,se:
+        Failures+='Share playlist via Grooveshark failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Share playlist via Grooveshark failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Share playlist via Grooveshark failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        LeftReg.click(NewShareBtn)
+        BottomRightReg.wait(ShareBtn,10)
+        BottomLeftReg.click(ShareMoreOption)
+        CenterReg.wait(ShareStumbleUponOption,10)
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+        print('Share Playlist via More OK.')
+    except StandardError,se:
+        Failures+='Share playlist via More failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Share playlist via More failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Share playlist via More failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    print('Playlists test complete.')
+except:
+        Failures+='Playlists failed.\n\n'
+
+#All Browsers Queue
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        BottomRightReg.click(QueueOptionsBtn)
+        BottomRightReg.hover(QueueSizesList)
+        BottomReg.click(NormalOption)
+        wait(2)
+        TopLeftReg.click(MyMusicMenu)
+        wait(3)
+        LeftReg.click(DontMoveLink)
+        LeftReg.wait(PlaylistOptionsBtn,10)
+        wait(1)
+        LeftReg.click(PlayAllMenu)
+        LeftReg.click(ReplaceCurrentOption)
+        BottomLeftReg.wait(QueueSongLink,60)
+        wait(2)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        BottomLeftReg.click(QueuePauseBtn)
+        wait(2)
+        BottomLeftReg.wait(QueuePlayBtn,10)
+        BottomLeftReg.click(QueuePlayBtn)
+        BottomLeftReg.wait(QueuePauseBtn,10)
+        BottomLeftReg.click(QueueNextBtn)
+        BottomLeftReg.wait(QueueSongLink2,10)
+        BottomLeftReg.click(QueuePreviousBtn)
+        BottomLeftReg.wait(QueueSongLink,10)
+        BottomRightReg.click(QueueVolumeBtn)
+        BottomRightReg.hover(QueueShuffleOffBtn)
+        BottomRightReg.wait(QueueVolumeOffBtn,10)
+        BottomRightReg.click(QueueVolumeOffBtn)
+        BottomRightReg.wait(QueueVolumeBtn,10)
+        BottomRightReg.click(QueueShuffleOffBtn)
+        BottomRightReg.hover(RadioOffSwitch)
+        BottomRightReg.wait(QueueShuffleOnBtn,10)
+        BottomRightReg.click(QueueShuffleOnBtn)
+        BottomRightReg.hover(RadioOffSwitch)
+        BottomRightReg.wait(QueueShuffleOffBtn,10)
+        BottomRightReg.click(QueueLoopOffBtn)
+        BottomRightReg.hover(RadioOffSwitch)
+        BottomRightReg.wait(QueueLoopOnBtn,10)
+        BottomRightReg.click(QueueLoopOnBtn)
+        BottomRightReg.hover(RadioOffSwitch)
+        BottomRightReg.wait(QueueLoop1Btn,10)
+        BottomRightReg.click(QueueLoop1Btn)
+        BottomRightReg.hover(RadioOffSwitch)
+        BottomRightReg.wait(QueueLoopOffBtn,10)
+        BottomRightReg.click(QueueCrossfadeOffBtn)
+        BottomRightReg.hover(RadioOffSwitch)
+        BottomRightReg.wait(QueueCrossfadeOnBtn,10)
+        BottomRightReg.click(QueueCrossfadeOnBtn)
+        BottomRightReg.hover(RadioOffSwitch)
+        BottomRightReg.wait(QueueCrossfadeOffBtn,10)
+        BottomRightReg.wait(2)
+        print 'Bottom controls OK.'
+    except StandardError,se:
+        Failures+='Bottom controls failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Bottom controls failed.\n'+str(ff)+'\n'
+
+    except:
+        Failures+='Bottom controls failed.\n\n'
+
+    try:
+        BottomRightReg.click(CurrentSongsMenu)
+        BottomRightReg.click(NowPlayingOption)
+        TopLeftReg.wait(NowPlayingClearBtn,10)
+        TopLeftReg.click(NowPlayingClearBtn)
+        BottomRightReg.wait(NoSongsLink,10)
+        wait(2)
+        TopLeftReg.click(NowPlayingRestoreBtn)
+        BottomRightReg.wait(Songs5Link,10)
+        wait(2)
+        TopLeftReg.click(NowPlayingPlayBtn2)
+        TopLeftReg.wait(NowPlayingPauseBtn,10)
+        wait(2)
+        TopLeftReg.click(NowPlayingPauseBtn)
+        TopLeftReg.wait(NowPlayingPlayBtn2,10)
+        print 'Now playing OK.'
+    except StandardError,se:
+        Failures+='Now playing failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Now playing failed.\n'+str(ff)+'\n'
+
+    except:
+        Failures+='Now playing failed.\n\n'
+
+    try:
+        BottomRightReg.click(CurrentSongsMenu)
+        BottomRightReg.hover(SaveCurrentSongsMenu)
+        RightReg.click(AddToMyMusicOption)
+        wait(3)
+        BottomRightReg.click(CurrentSongsMenu)
+        BottomRightReg.hover(SaveCurrentSongsMenu)
+        BottomRightReg.hover(SaveAsPlaylistOption)
+        RightReg.click(AddToAddListOption)
+        RightReg.wait(OKBtn,10)
+        RightReg.click(OKBtn)
+        RightReg.wait(AddToAddListNotice,10)
+        wait(2)
+        print 'Save queue as playlist OK.'
+    except StandardError,se:
+        Failures+='Save queue as playlist failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Save queue as playlist failed.\n'+str(ff)+'\n'
+
+    except:
+        Failures+='Save queue as playlist failed.\n\n'
+
+    try:
+        BottomRightReg.click(CurrentSongsMenu)
+        BottomRightReg.hover(SaveCurrentSongsMenu)
+        BottomRightReg.hover(AddToPlaylistOption)
+        RightReg.click(AddToAddListOption)
+        RightReg.wait(AddToAddListNotice,10)
+        BottomRightReg.hover(RadioOffSwitch)
+        wait(2)
+        print 'Add queue to playlist OK.'
+    except StandardError,se:
+        Failures+='Add queue to playlist failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Add queue to playlist failed.\n'+str(ff)+'\n'
+
+    except:
+        Failures+='Add queue to playlist failed.\n\n'
+
+    try:
+        BottomRightReg.click(CurrentSongsMenu)
+        BottomRightReg.hover(SaveCurrentSongsMenu)
+        BottomRightReg.click(EmbedSongsOption)
+        BottomRightReg.wait(DoneBtn,10)
+        BottomRightReg.click(DoneBtn)
+        wait(2)
+        print 'Embed queue songs OK.'
+    except StandardError,se:
+        Failures+='Embed queue songs failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Embed queue songs failed.\n'+str(ff)+'\n'
+
+    except:
+        Failures+='Embed queue songs failed.\n\n'
+
+    try:
+        BottomRightReg.click(CurrentSongsMenu)
+        BottomRightReg.hover(LoadMenu)
+        BottomRightReg.click(LoadFavoritesOption)
+        BottomRightReg.wait(HeartImage,30)
+        BottomRightReg.hover(QueueOptionsBtn)
+        wait(3)
+        print 'Load Favorites OK.'
+    except StandardError,se:
+        Failures+='Load Favorites failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Load Favorites failed.\n'+str(ff)+'\n'
+
+    except:
+        Failures+='Load Favorites failed.\n\n'
+
+    try:
+        BottomRightReg.click(StationsMenu)
+        BottomRightReg.click(CountryOption)
+        CenterReg.wait(StartRadioStationBtn,10)
+        CenterReg.click(StartRadioStationBtn)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        wait(2)
+        BottomRightReg.click(RadioOnSwitch)
+        BottomRightReg.wait(RadioOffSwitch,10)
+        wait(2)
+        print 'Load station OK.'
+    except StandardError,se:
+        Failures+='Load station failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Load station failed.\n'+str(ff)+'\n'
+
+    except:
+        Failures+='Load station failed.\n\n'
+
+    try:
+        BottomRightReg.click(CurrentSongsMenu)
+        BottomRightReg.hover(LoadMenu)
+        BottomRightReg.hover(LoadPlaylistOption)
+        RightReg.click(DontMoveOption)
+        CenterReg.wait(LoadPlaylistBtn,10)
+        CenterReg.click(LoadPlaylistBtn)
+        BottomLeftReg.wait(QueueSongLink,30)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        wait(2)
+        print 'Load playlist OK.'
+    except StandardError,se:
+        Failures+='Load playlist failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Load playlist failed.\n'+str(ff)+'\n'
+
+    except:
+        Failures+='Load playlist failed.\n\n'
+
+    try:
+        BottomRightReg.click(ClearQueueBtn)
+        BottomRightReg.wait(RestoreQueueBtn),10
+        BottomRightReg.click(RestoreQueueBtn)
+        BottomLeftReg.wait(QueueSongLink,10)
+        BottomRightReg.hover(ClearQueueBtn)
+        print 'Clear/Restore queue OK.'
+    except StandardError,se:
+        Failures+='Clear/Restore queue failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Clear/Restore queue failed.\n'+str(ff)+'\n'
+
+    except:
+        Failures+='Clear/Restore queue failed.\n\n'
+
+    try:
+        BottomRightReg.click(QueueOptionsBtn)
+        BottomRightReg.hover(QueueSizesList)
+        BottomRightReg.click(SmallOption)
+        BottomLeftReg.wait(SmallQueueSong,10)
+        wait(2)
+        BottomRightReg.click(QueueOptionsBtn)
+        BottomRightReg.hover(QueueSizesList)
+        BottomRightReg.click(HideOption)
+        BottomRightReg.waitVanish(SmallQueueSong,10)
+        wait(2)
+        BottomRightReg.click(QueueOptionsBtn)
+        BottomRightReg.hover(QueueSizesList)
+        BottomRightReg.click(LargeOption)
+        BottomLeftReg.wait(LargeQueueSong,10)
+        wait(2)
+        BottomRightReg.click(QueueOptionsBtn)
+        BottomRightReg.hover(QueueSizesList)
+        BottomRightReg.click(NormalOption)
+        BottomLeftReg.wait(NormalQueueSong,10)
+        wait(2)
+        print 'Change queue size OK.'
+    except StandardError,se:
+        Failures+='Change queue size failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Change queue size failed.\n'+str(ff)+'\n'
+
+    except:
+        Failures+='Change queue size failed.\n\n'
+
+    try:
+        BottomRightReg.click(QueueOptionsBtn)
+        BottomRightReg.click(VisualizerOption)
+        CenterReg.wait(CloseLightboxBtn,10)
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+        print 'Visualizer OK.'
+    except StandardError,se:
+        Failures+='Visualizer failed. failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Visualizer failed.\n'+str(ff)+'\n'
+
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Visualizer failed.\n\n'
+
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        BottomRightReg.click(QueueOptionsBtn)
+        BottomRightReg.click(VideoModeOption)
+        CenterReg.wait(CloseLightboxBtn,10)
+        wait(2)
+        BottomRightReg.click(NextSongBtn)
+        CenterReg.wait(VideoModeTitle2,10)
+        BottomReg.click(PreviousSongBtn)
+        CenterReg.wait(VideoModeTitle1,10)
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+        BottomRightReg.waitVanish(VideoModeTitle1,5)
+        print 'Video mode OK.'
+    except StandardError,se:
+        Failures+='Video mode failed. failed.\n'+str(se)+'\n\n'
+
+    except FindFailed,ff:
+        Failures+='Video mode failed.\n'+str(ff)+'\n'
+
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Video mode failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    print 'Queue test complete.'
+except:
+        Failures+='Queue failed.\n'
+
+#All Browsers Song Rows
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        CenterReg.wait(DefaultSearchForMusicBar,5)
+        if BottomRightReg.exists(ClearQueueBtn):
+            BottomRightReg.click(ClearQueueBtn)
+        wait(1)
+        TopLeftReg.click(MyMusicMenu)
+        LeftReg.wait(DontMoveLink,10)
+        wait(2)
+        LeftReg.click(DontMoveLink)
+        LeftReg.wait(DontMoveTitle,30)
+        LeftReg.hover(PlaylistSongLink)
+        LeftReg.wait(2)
+        LeftReg.click(SongRowMenu)
+        LeftReg.hover(PlaylistOptionsBtn)
+        if CenterReg.exists(RemoveFromMyMusicOption):
+            CenterReg.click(RemoveFromMyMusicOption)
+            BottomRightReg.wait(RemoveFromMyMusicNotice,30)
+            LeftReg.hover(PlaylistSelectedSongLink)
+            LeftReg.click(SelectedSongRowMenu)
+            wait(1)
+            LeftReg.hover(PlaylistOptionsBtn)
+        CenterReg.wait(AddToMyMusicOption,10)
+        CenterReg.click(AddToMyMusicOption)
+        BottomRightReg.wait(AddSongToMyMusicNotice,30)
+        print 'Remove & Add song to My Music OK.'
+    except StandardError,se:
+        Failures+='Remove & Add song to My Music failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Remove & Add song to My Music failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Remove & Add song to My Music failed.\n\n'
+    try:
+        LeftReg.hover(PlaylistSelectedSongLink)
+        LeftReg.click(SelectedSongRowMenu)
+        CenterReg.wait(AddToPlaylistOption,30)
+        CenterReg.hover(AddToPlaylistOption)
+        CenterReg.click(AddToAddListOption)
+        BottomRightReg.wait(AddToAddListNotice,30)
+        print 'Add song to playlist OK.'
+    except StandardError,se:
+        Failures+='Add song to playlist failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Add song to playlist failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Add song to playlist failed.\n\n'
+    try:
+        LeftReg.hover(PlaylistSelectedSongLink)
+        LeftReg.click(SelectedSongRowMenu)
+        LeftReg.hover(PlaylistOptionsBtn)
+        if CenterReg.exists(AddToFavoritesOption):
+            CenterReg.click(AddToFavoritesOption)
+            BottomRightReg.wait(AddSongToFavoritesNotice,30)
+            LeftReg.hover(PlaylistSelectedSongLink)
+            LeftReg.click(SelectedSongRowMenu)
+            LeftReg.hover(PlaylistOptionsBtn)
+            CenterReg.wait(RemoveFromFavoritesOption,10)
+        CenterReg.click(RemoveFromFavoritesOption)
+        BottomRightReg.wait(RemoveFromFavoritesNotice,10)
+        wait(2)
+        print 'Remove & Add song to Favorites OK.'
+    except StandardError,se:
+        Failures+='Remove & Add song to Favorites failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Remove & Add song to Favorites failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Remove & Add song to Favorites failed.\n\n'
+    try:
+        LeftReg.hover(PlaylistSelectedSongLink)
+        LeftReg.click(SelectedSongRowMenu)
+        if CenterReg.exists(PinOption):
+                CenterReg.click(PinOption)
+                BottomRightReg.wait(PinSongNotice,30)
+                LeftReg.hover(PlaylistSelectedSongLink)
+                LeftReg.click(SelectedSongRowMenu)
+        CenterReg.wait(UnpinOption,10)
+        CenterReg.click(UnpinOption)
+        BottomRightReg.wait(UnpinSongNotice,30)
+        wait(2)
+        print 'Pin/Unpin song OK.'
+    except StandardError,se:
+        Failures+='Pin/Unpin song failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Pin/Unpin song failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Pin/Unpin song failed.\n\n'
+    try:
+        LeftReg.hover(PlaylistSelectedSongLink)
+        LeftReg.click(SelectedSongRowMenu)
+        CenterReg.wait(ShareSongMenu,30)
+        CenterReg.click(ShareSongMenu)
+        BottomRightReg.wait(ShareBtn,10)
+        BottomRightReg.click(ShareBtn)
+        BottomRightReg.wait(ShareSongNotice,30)
+        BottomRightReg.waitVanish(ShareBtn,5)
+        wait(1)
+        print 'Share song via Grooveshark OK.'
+    except StandardError,se:
+        Failures+='Share song via Grooveshark failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Share song via Grooveshark failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Share song via Grooveshark failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        LeftReg.hover(PlaylistSelectedSongLink)
+        if LeftReg.exists(SelectedSongRowMenu):
+                LeftReg.click(SelectedSongRowMenu)
+        else:
+                LeftReg.click(SongRowMenu)
+        CenterReg.wait(ShareSongMenu,30)
+        BottomReg.click(BuySongOption)
+        CenterReg.wait(CloseBtn,30)
+        CenterReg.click(CloseBtn)
+        CenterReg.waitVanish(CloseBtn,30)
+        print 'Buy song OK.'
+    except StandardError,se:
+        Failures+='Buy song failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Buy song failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Buy song failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        LeftReg.drag(PlaylistSelectedSongLink)
+        RightReg.hover(InPageSearchBar)
+        RightReg.wait(DragToMyMusic,10)
+        RightReg.dropAt(DragToMyMusic)
+        RightReg.waitVanish(DragToMyMusic,10)
+        wait(2)
+        print('Drag song to My Music OK.')
+    except StandardError,se:
+        Failures+='Drag song to My Music failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Drag song to My Music failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Drag song to My Music failed.\n\n'
+    try:
+        LeftReg.drag(PlaylistSelectedSongLink)
+        RightReg.hover(InPageSearchBar)
+        RightReg.wait(DragToPlaylist,10)
+        RightReg.dropAt(DragToPlaylist)
+        BottomRightReg.wait(AddToAddListNotice,30)
+        wait(2)
+        print('Drag song to playlist OK.')
+    except StandardError,se:
+        Failures+='Drag song to playlist failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Drag song to playlist failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Drag song to playlist failed.\n\n'
+    try:
+        LeftReg.drag(PlaylistSelectedSongLink)
+        RightReg.hover(InPageSearchBar)
+        RightReg.wait(DragToShare,10)
+        RightReg.dropAt(DragToShare)
+        BottomRightReg.wait(ShareBtn,10)
+        CenterReg.click(CloseLightboxBtn)
+        CenterReg.waitVanish(CloseLightboxBtn)
+        wait(2)
+        print('Drag song to share OK.')
+    except StandardError,se:
+        Failures+='Drag song to share failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Drag song to share failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Drag song to share failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        LeftReg.drag(PlaylistSelectedSongLink)
+        RightReg.hover(InPageSearchBar)
+        RightReg.wait(DragToEmbed,10)
+        RightReg.dropAt(DragToEmbed)
+        BottomRightReg.wait(DoneBtn,10)
+        BottomRightReg.click(DoneBtn)
+        CenterReg.waitVanish(CloseLightboxBtn)
+        wait(2)
+        print('Drag song to Widget OK.')
+    except StandardError,se:
+        Failures+='Drag song to Widget failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Drag song to Widget failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Drag song to Widget failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    print 'Song rows test complete.'
+except:
+        Failures+='Song rows failed.\n'
+
+#All Browsers Search
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        CenterReg.wait(DefaultSearchForMusicBar,10)
+        CenterReg.click(DefaultSearchForMusicBar)
+        CenterReg.type('lady gaga'+Key.ENTER)
+        wait(2)
+        LeftReg.wait(SongsIndicator,10)
+        TopReg.click(SearchArtistsTab)
+        LeftReg.wait(ArtistsIndicator,30)
+        TopReg.click(SearchAlbumsTab)
+        TopLeftReg.wait(AlbumsIndicator,30)
+        TopReg.click(SearchPlaylistsTab)
+        TopLeftReg.wait(PlaylistsIndicator,30)
+        TopReg.click(SearchPeopleTab)
+        TopLeftReg.wait(PeopleIndicator,30)
+        TopReg.click(SearchEventsTab)
+        if not CenterReg.exists(NoEventsResultsText):
+            LeftReg.wait(EventsIndicator,30)
+        TopRightReg.click(InPageSearchBar)
+        wait(2)
+        TopRightReg.type('laddy gaga'+Key.ENTER)
+        TopLeftReg.wait(SuggestedResultsText,10)
+    except StandardError,se:
+        Failures+='Results Search failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Results Search failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Results Search failed.\n\n'
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        CenterReg.wait(DefaultSearchForMusicBar,10)
+        CenterReg.click(DefaultSearchForMusicBar)
+        CenterReg.type('velnlsd'+Key.ENTER)
+        CenterReg.wait(NoSongsResultsText,10)
+        wait(2)
+        TopReg.click(SearchSongsTab)
+        CenterReg.wait(NoSongsResultsText,10)
+        wait(2)
+        TopReg.click(SearchArtistsTab)
+        CenterReg.wait(NoArtistsResultsText,10)
+        wait(2)
+        TopReg.click(SearchAlbumsTab)
+        CenterReg.wait(NoAlbumsResultsText,10)
+        wait(2)
+        TopReg.click(SearchPlaylistsTab)
+        CenterReg.wait(NoPlaylistsResultsText,10)
+        wait(2)
+        TopReg.click(SearchPeopleTab)
+        CenterReg.wait(NoPeopleResultsText,10)
+        wait(2)
+        TopReg.click(SearchEventsTab)
+        CenterReg.wait(NoEventsResultsText,10)
+        wait(2)
+    except StandardError,se:
+        Failures+='NoResults Search failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='NoResults Search failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='NoResults Search failed.\n\n'
+    print 'Search test complete.'
+except:
+    Failures+='Search failed.\n'
+
+#All Browsers Song Page
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        CenterReg.wait(DefaultSearchForMusicBar,5)
+        if BottomRightReg.exists(ClearQueueBtn):
+            BottomRightReg.click(ClearQueueBtn)
+        wait(1)
+        TopLeftReg.click(MyMusicMenu)
+        LeftReg.wait(DontMoveLink,10)
+        wait(2)
+        LeftReg.click(DontMoveLink)
+        LeftReg.wait(DontMoveTitle,30)
+        wait(2)
+        LeftReg.click(PlaylistSongLink)
+        LeftReg.wait(PlaySongBtn,30)
+        wait(2)
+        LeftReg.click(PlaySongBtn)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        wait(2)
+        LeftReg.click(PlaySongMenu)
+        LeftReg.click(ReplaceCurrentOption)
+        BottomRightReg.wait(Song1Link,30)
+        wait(2)
+        LeftReg.click(PlaySongMenu)
+        LeftReg.click(StartRadioOption)
+        BottomRightReg.wait(RadioOnSwitch,30)
+        BottomRightReg.click(ClearQueueBtn)
+        wait(2)
+        print('Play song OK.')
+    except StandardError,se:
+        Failures+='Play song failed.\n'+str(se)+'\n\n'
+        ExitCode=1
+    except FindFailed,ff:
+        Failures+='Play song failed.\n'+str(ff)+'\n'
+        ExitCode=1
+    except:
+        Failures+='Play song failed.\n\n'
+        ExitCode=1
+    try:
+        LeftReg.click(AddSongMenu)
+        LeftReg.click(AddToCurrentSongsOption)
+        BottomRightReg.wait(Song1Link,30)
+        LeftReg.click(AddSongMenu)
+        LeftReg.hover(AddToPlaylistOption)
+        CenterReg.wait(AddToAddListOption,30)
+        CenterReg.click(AddToAddListOption)
+        BottomRightReg.wait(AddToAddListNotice,30)
+        LeftReg.click(AddSongMenu)
+        LeftReg.hover(AddToPlaylistOption)
+        CenterReg.wait(AddToNewPlaylistOption,30)
+        CenterReg.click(AddToNewPlaylistOption)
+        BottomRightReg.wait(CreatePlaylistBtn,30)
+        BottomRightReg.click(CreatePlaylistBtn)
+        BottomRightReg.wait(AddPlaylistToNewPlaylistNotice,30)
+        TopLeftReg.click(MyMusicMenu)
+        LeftReg.click(NewPlaylistLink)
+        LeftReg.click(PlaylistOptionsBtn)
+        LeftReg.click(PlaylistDeleteOption)
+        CenterReg.wait(DeleteBtn,30)
+        CenterReg.click(DeleteBtn)
+        BottomRightReg.wait(PlaylistDeleteNotice,30)
+        TopLeftReg.click(MyMusicMenu)
+        LeftReg.wait(DontMoveLink,10)
+        LeftReg.click(DontMoveLink)
+        LeftReg.wait(DontMoveTitle,10)
+        LeftReg.click(PlaylistSongLink)
+        TopLeftReg.wait(PlaySongBtn,10)
+        print('Add song OK.')
+    except StandardError,se:
+        Failures+='Add song failed.\n'+str(se)+'\n\n'
+        ExitCode=1
+    except FindFailed,ff:
+        Failures+='Add song failed.\n'+str(ff)+'\n'
+        ExitCode=1
+    except:
+        Failures+='Add song failed.\n\n'
+        ExitCode=1
+    try:
+        if LeftReg.exists(DontMoveLink):
+            LeftReg.click(DontMoveLink)
+        LeftReg.wait(NewShareBtn,5)
+        LeftReg.click(NewShareBtn)
+        BottomRightReg.wait(ShareBtn,10)
+        CenterReg.click(CloseLightboxBtn)
+        BottomRightReg.waitVanish(ShareBtn,5)
+        print 'Share song OK.'
+    except StandardError,se:
+        Failures+='Share song failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Share song failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Share song failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+except:
+        Failures+='Song page failed.\n\n'
+        ExitCode=1
+
+#All Browsers Artist Page
+try:
+    try:
+        TopLeftReg.type('l',KEY_CTRL)
+        TopLeftReg.paste('grooveshark.com/#/artist/Lady+Gaga/674027')
+        TopLeftReg.type(Key.ENTER)
+        CenterReg.wait(AlbumsIndicator,30)
+        wait(5)
+        TopLeftReg.click(PlayMenu)
+        TopLeftReg.click(PlayTopSongsOption)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        wait(2)
+        TopLeftReg.click(PlayMenu)
+        TopLeftReg.wait(StartStationOption,10)
+        TopLeftReg.click(StartStationOption)
+        if CenterReg.exists(StartRadioStationBtn):
+            CenterReg.click(StartRadioStationBtn)
+        wait(RadioOnSwitch,30)
+        wait(QueuePauseBtn,30)
+        BottomRightReg.click(ClearQueueBtn)
+        wait(2)
+    except StandardError,se:
+        Failures+='Play in Artist page failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Play in Artist page failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Play in Artist page failed.\n\n'
+    try:
+        TopLeftReg.click(FollowBtn)
+        wait(FollowingBtn,10)
+        wait(2)
+        TopLeftReg.click(FollowingBtn)
+        TopLeftReg.wait(FollowBtn,10)
+        wait(2)
+    except StandardError,se:
+        Failures+='Follow in Artist page failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Follow in Artist page failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Follow in Artist page failed.\n\n'
+    try:
+        LeftReg.click(ArtistSongsTab)
+        LeftReg.wait(SongsIndicator,30)
+        wait(2)
+        LeftReg.click(ArtistAlbumsTab)
+        LeftReg.wait(ArtistAlbumsIndicator,30)
+        wait(2)
+        LeftReg.click(ArtistEventsTab)
+        if not CenterReg.exists(NoEventsResultsText):
+            LeftReg.wait(EventsIndicator,30)
+        wait(2)
+    except StandardError,se:
+        Failures+='Tabs in Artist page failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Tabs in Artist page failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Tabs in Artist page failed.\n\n'
+    print 'Artist page test complete.'
+except:
+        Failures+='Artist page failed.\n'
+
+#All Browsers Explore
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        TopLeftReg.click(ExploreMenu)
+        LeftReg.wait(FeaturedIndicator2,30)
+        wait(2)
+        print 'Featured OK.'
+    except StandardError,se:
+        Failures+='Featured failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Featured failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Featured failed.\n\n'
+    try:
+        TopLeftReg.click(FeaturedPlaylistsTab)
+        TopLeftReg.wait(FeaturedPlaylistsIndicator,30)
+        wait(2)
+        print 'Featured Playlists OK.'
+    except StandardError,se:
+        Failures+='Featured Playlists failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Featured Playlists failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Featured Playlists failed.\n\n'
+    try:
+        TopLeftReg.click(FeaturedVideosTab)
+        TopLeftReg.wait(FeaturedVideosIndicator,30)
+        wait(2)
+        print 'Featured Videos OK.'
+    except StandardError,se:
+        Failures+='Featured Videos failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Featured Videos failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Featured Videos failed.\n\n'
+    try:
+        TopLeftReg.click(PopularTab)
+        LeftReg.wait(SongsIndicator,30)
+        wait(2)
+        print 'Popular OK.'
+    except StandardError,se:
+        Failures+='Popular failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Popular failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Popular failed.\n\n'
+    try:
+        LeftReg.click(StationsTab)
+        TopLeftReg.wait(StationsIndicator,30)
+        wait(2)
+        print 'Stations OK.'
+    except StandardError,se:
+        Failures+='Stations failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Stations failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Stations failed.\n\n'
+    print 'Explore test complete.'
+except:
+        Failures+='Explore failed.\n'
+
+#All Browsers Help
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        TopRightReg.hover(AccountMenu)
+        wait(2)
+        TopRightReg.hover(HelpOption)
+        TopRightReg.wait(FeedbackOption,10)
+        TopRightReg.click(FeedbackOption)
+        BottomLeftReg.wait(CloseBtn,10)
+        BottomLeftReg.click(CloseBtn)
+        BottomLeftReg.waitVanish(CloseBtn,10)
+        wait(2)
+        print 'Help OK.'
+    except StandardError,se:
+        Failures+='Help failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Help failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Help failed.\n\n'
+except:
+        Failures+='Features failed.\n'
+
+#All Browsers Features
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        TopRightReg.hover(AccountMenu)
+        wait(2)
+        TopRightReg.click(FeaturesOption)
+        LeftReg.wait(iPhoneIndicator,10)
+        LeftReg.click(AndroidBtn)
+        LeftReg.wait(AndroidIndicator,10)
+        LeftReg.click(BlackBerryBtn)
+        LeftReg.wait(BlackBerryIndicator,10)
+        CenterReg.click(NokiaBtn)
+        LeftReg.wait(NokiaIndicator,10)
+        CenterReg.click(HPWebOSBtn)
+        LeftReg.wait(HPWebOSIndicator,10)
+        wait(2)
+        print 'Mobile OK.'
+    except StandardError,se:
+        Failures+='Mobile failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Mobile failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Mobile failed.\n\n'
+    try:
+        TopLeftReg.click(DesktopMenu)
+        LeftReg.wait(DesktopIndicator,10)
+        wait(2)
+        print 'Desktop OK.'
+    except StandardError,se:
+        Failures+='Desktop failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Desktop failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Desktop failed.\n\n'
+    try:
+        TopLeftReg.click(ExtrasMenu)
+        LeftReg.wait(VideoModeActivateBtn,10)
+        LeftReg.click(VideoModeActivateBtn)
+        if BottomRightReg.exists(VideoModeNotice):
+            wait(2)
+        elif CenterReg.exists(CloseLightboxBtn):
+            CenterReg.click(CloseLightboxBtn)
+            CenterReg.waitVanish(CloseLightboxBtn)
+        else:
+            raise StandardError('Video Mode in Extras failed.\n')
+        wait(2)
+        CenterReg.click(VisualizerActivateBtn)
+        CenterReg.wait(CloseLightboxBtn,10)
+        wait(2)
+        CenterReg.click(CloseLightboxBtn)
+        wait(2)
+        LeftReg.click(TurnOnBtn)
+        wait(1)
+        LeftReg.wait(TurnOffBtn,5)
+        LeftReg.click(TurnOffBtn)
+        wait(1)
+        LeftReg.wait(TurnOnBtn,5)
+        wait(2)
+        print 'Extras OK.'
+    except StandardError,se:
+        Failures+='Extras failed.\n'+str(se)+'\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except FindFailed,ff:
+        Failures+='Extras failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Extras failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+except:
+        Failures+='Features failed.\n'
+
+#All Browsers Invite Friends
+try:
+    try:
+        TopRightReg.hover(AccountMenu)
+        TopRightReg.click(InviteFriendsOption)
+        BottomRightReg.wait(PostToMyWallBtn,10)
+        CenterReg.click(GgInviteOption)
+        CenterReg.wait(LoginBtn,10)
+        print 'Invite friends through Google OK.'
+    except StandardError,se:
+        Failures+='Invite friends through Google failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Invite friends through Google failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Invite friends through Google failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    try:
+        TopLeftReg.click(EmailInviteOption)
+        CenterReg.wait(SendInviteBtn,10)
+        CenterReg.click(EmailInviteTextbox)
+        strEmail='hi'+str(time.time())+'@shark.com'
+        wait(1)
+        CenterReg.paste(strEmail)
+        BottomRightReg.click(SendInviteBtn)
+        BottomRightReg.wait(EmailInviteNotice,10)
+        print 'Invite friends through Email OK.'
+    except StandardError,se:
+        Failures+='Invite friends through Email failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Invite friends through Email failed.\n'+str(ff)+'\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+    except:
+        Failures+='Invite friends through Email failed.\n\n'
+        while CenterReg.exists(CloseLightboxBtn):
+                CenterReg.click(CloseLightboxBtn)
+                CenterReg.waitVanish(CloseLightboxBtn)
+except:
+        Failures+='Invite Friends failed.\n'
+
+#All Browsers Community Page
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        if BottomLeftReg.exists(QueuePauseBtn):
+                BottomLeftReg.click(QueuePauseBtn)
+        wait(2)
+        TopLeftReg.click(CommunityMenu)
+        LeftReg.wait(FeedAgoText,30)
+        LeftReg.click(PlayRecentBtn)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        wait(2)
+        BottomRightReg.click(ClearQueueBtn)
+        BottomLeftReg.wait(QueuePlayBtn,10)
+        wait(2)
+        print 'Play Recent Button OK.'
+    except StandardError,se:
+        Failures+='Play Recent Button failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Play Recent Button failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Play Recent Button failed.\n\n'
+    try:
+        while not LeftReg.exists(FeedPlayMenu,1):
+            wheel(WHEEL_DOWN,3)
+        LeftReg.click(FeedPlayMenu)
+        LeftReg.wait(ReplaceCurrentOption,10)
+        LeftReg.click(ReplaceCurrentOption)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        BottomRightReg.click(ClearQueueBtn)
+        BottomLeftReg.wait(QueuePlayBtn,10)
+        wait(2)
+        print 'Feeds-Play OK.'
+    except StandardError,se:
+        Failures+='Feeds-Play failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Feeds-Play failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Feeds-Play failed.\n\n'
+    try:
+        RightReg.dragDrop(DropdownboxScrollBar,DropdownboxUpArrow)
+        wait(2)
+        TopRightReg.click(InPageSearchBar)
+        wait(1)
+        TopRightReg.paste('lady gaga')
+        wait(1)
+        TopRightReg.type(Key.ENTER)
+        TopLeftReg.wait(AllMatchesTitle,10)
+        CenterReg.wait(AlbumsIndicator,30)
+        wait(2)
+        print 'In-page Search OK.'
+    except StandardError,se:
+        Failures+='In-page Search failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='In-page Search failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='In-page Search failed.\n\n'
+    print 'Community Page test complete.'
+except:
+        Failures+='Community Page failed.\n\n'
+
+#All Browsers Profile Page
+try:
+    try:
+        TopLeftReg.click(GroovesharkLogo)
+        TopRightReg.click(AccountMenu)
+        if not LeftReg.exists(FeedAgoText,10):
+            wait(FeedAtText,30)
+        LeftReg.click(PlayRecentBtn)
+        BottomLeftReg.wait(QueuePauseBtn,30)
+        BottomRightReg.click(ClearQueueBtn)
+        BottomLeftReg.wait(QueuePlayBtn,10)
+        wait(1)
+        TopLeftReg.click(FollowingTab)
+        CenterReg.wait(FollowingTag,10)
+        TopLeftReg.click(FollowersTab)
+        wait(1)
+        CenterReg.wait(FollowingTag,10)
+        print 'Profile Page OK.'
+    except StandardError,se:
+        Failures+='Profile Page failed.\n'+str(se)+'\n\n'
+    except FindFailed,ff:
+        Failures+='Profile Page failed.\n'+str(ff)+'\n'
+    except:
+        Failures+='Profile Page failed.\n\n'
+except:
+    Failures+='Profile Page failed.\n\n'
+
+EndTime=time.time()
+TotalTime=EndTime-StartTime
+strTime+='Total time:'+str(TotalTime)+'secs\n'
+f=open('C:/Users/Rosen/Desktop/test.txt','w')
+f.write(Failures)
+f.close()
+print Failures+strTime+'\nAll functional tests complete!'
+if Failures=='\n':
+    ExitCode=0
+else:
+    ExitCode=1
+exit(ExitCode)
